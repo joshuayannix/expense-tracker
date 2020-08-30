@@ -84,6 +84,7 @@ const budgetController = (() => {
 
     getBudget: () => {
       return {
+        // This is an object that gets passed into displayBudget method in UIController.
 
         totalExpenses: data.totalExpenses,
 
@@ -153,21 +154,47 @@ const UIController = (() => {
       console.log(obj)
       console.log(obj.totalExpenses)
       console.log(obj.allItems)
+
       //category values DOM
-      document.querySelector('.expenses__housing--value').textContent = obj.housing;
-      document.querySelector('.expenses__food--value').textContent = obj.food;
-      document.querySelector('.expenses__travel--value').textContent = obj.travel;
-      document.querySelector('.expenses__entertainment--value').textContent = obj.entertainment;
-      document.querySelector('.expenses__investments--value').textContent = obj.investments;
-      document.querySelector('.expenses__other--value').textContent = obj.other;
+      document.querySelector('.expenses__housing--value').textContent = '$' + obj.housing;
+      document.querySelector('.expenses__food--value').textContent = '$' + obj.food;
+      document.querySelector('.expenses__travel--value').textContent = '$' + obj.travel;
+      document.querySelector('.expenses__entertainment--value').textContent = '$' + obj.entertainment;
+      document.querySelector('.expenses__investments--value').textContent = '$' + obj.investments;
+      document.querySelector('.expenses__other--value').textContent = '$' + obj.other;
 
       // category percentage DOM
-      document.querySelector('.expenses__housing--percentage').textContent = obj.housing_percentage;
-      document.querySelector('.expenses__food--percentage').textContent = obj.food_percentage;
-      document.querySelector('.expenses__travel--percentage').textContent = obj.travel_percentage;
-      document.querySelector('.expenses__entertainment--percentage').textContent = obj.entertainment_percentage;
-      document.querySelector('.expenses__investments--percentage').textContent = obj.investmentes_percentage;
-      document.querySelector('.expenses__other--percentage').textContent = obj.other_percentage;
+      if (obj.housing_percentage > 0) {
+        document.querySelector('.expenses__housing--percentage').textContent = obj.housing_percentage + '%';
+      } else {
+        document.querySelector('.expenses__housing--percentage').textContent = '--%';
+      }
+      if (obj.food_percentage > 0) {
+        document.querySelector('.expenses__food--percentage').textContent = obj.food_percentage + '%';
+      } else {
+        document.querySelector('.expenses__food--percentage').textContent = '--%';
+      }
+      if (obj.travel_percentage > 0) {
+        document.querySelector('.expenses__travel--percentage').textContent = obj.travel_percentage + '%';
+      } else {
+        document.querySelector('.expenses__travel--percentage').textContent = '--%';
+      }
+      if (obj.entertainment_percentage > 0) {
+        document.querySelector('.expenses__entertainment--percentage').textContent = obj.entertainment_percentage + '%';
+      } else {
+        document.querySelector('.expenses__entertainment--percentage').textContent = '--%';
+      }
+      if (obj.investments_percentage > 0) {
+        document.querySelector('.expenses__investments--percentage').textContent = obj.investments_percentage + '%';
+      } else {
+        document.querySelector('.expenses__investments--percentage').textContent = '--%';
+      }
+      if (obj.other_percentage > 0) {
+        document.querySelector('.expenses__other--percentage').textContent = obj.other_percentage + '%';
+      } else {
+        document.querySelector('.expenses__other--percentage').textContent = '--%';
+      }
+      
     }
   }
 })();
