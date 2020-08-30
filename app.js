@@ -73,7 +73,7 @@ const budgetController = (() => {
       data.totalExpenses = data.totals.housing + data.totals.food + data.totals.travel + data.totals.entertainment + data.totals.investments + data.totals.other;
 
       // for each category total, calculate the percentage of total expenses 
-      
+
       data.housing_percentage = Math.round((data.totals.housing / data.totalExpenses) * 100);
       data.food_percentage = Math.round((data.totals.food / data.totalExpenses) * 100);
       data.travel_percentage = Math.round((data.totals.travel / data.totalExpenses) * 100);
@@ -84,7 +84,18 @@ const budgetController = (() => {
 
     getBudget: () => {
       return {
+
         totalExpenses: data.totalExpenses,
+
+        // category totals
+        housing: data.totals.housing,
+        food: data.totals.food,
+        travel: data.totals.travel,
+        entertainment: data.totals.entertainment,
+        investments: data.totals.investments,
+        other: data.totals.other,
+
+        //category percentages
         housing_percentage: data.housing_percentage,
         food_percentage: data.food_percentage,
         travel_percentage: data.travel_percentage,
@@ -135,6 +146,28 @@ const UIController = (() => {
         current.value = '';
       });
       fieldsArr[0].focus();
+    },
+
+    displayBudget: obj => {
+      document.querySelector('.expenses__value').textContent = obj.totalExpenses;
+      console.log(obj)
+      console.log(obj.totalExpenses)
+      console.log(obj.allItems)
+      //category values DOM
+      document.querySelector('.expenses__housing--value').textContent = obj.housing;
+      document.querySelector('.expenses__food--value').textContent = obj.food;
+      document.querySelector('.expenses__travel--value').textContent = obj.travel;
+      document.querySelector('.expenses__entertainment--value').textContent = obj.entertainment;
+      document.querySelector('.expenses__investments--value').textContent = obj.investments;
+      document.querySelector('.expenses__other--value').textContent = obj.other;
+
+      // category percentage DOM
+      document.querySelector('.expenses__housing--percentage').textContent = obj.housing_percentage;
+      document.querySelector('.expenses__food--percentage').textContent = obj.food_percentage;
+      document.querySelector('.expenses__travel--percentage').textContent = obj.travel_percentage;
+      document.querySelector('.expenses__entertainment--percentage').textContent = obj.entertainment_percentage;
+      document.querySelector('.expenses__investments--percentage').textContent = obj.investmentes_percentage;
+      document.querySelector('.expenses__other--percentage').textContent = obj.other_percentage;
     }
   }
 })();
@@ -160,7 +193,7 @@ const controller = ((budgetCtrl, UICtrl) => {
     let totalExpenses = budgetCtrl.getBudget();
 
     // 3. Display the budget on the UI
-    console.log(totalExpenses)
+    UICtrl.displayBudget(totalExpenses)
   };
 
   const ctrlAddItem = () => {
