@@ -4,6 +4,15 @@ const budgetController = (() => {
     this.description = description;
     this.value = value;
   }
+
+  const calculateTotal = type => {
+    let sum = 0;
+    data.allItems[type].forEach(cur => {
+      sum += cur.value;
+    });
+    data.totals[type] = sum;
+  }
+
   const data = {
     allItems: {
       housing: [],
@@ -20,7 +29,14 @@ const budgetController = (() => {
       entertainment: 0,
       investments: 0,
       other: 0,
-    }
+    },
+    totalExpenses: 0,
+    housing_percentage: -1,
+    food_percentage: -1,
+    travel_percentage: -1,
+    entertainment_percentage: -1,
+    investments_percentage: -1,
+    other_percentage: -1,
   };
 
   return {
@@ -42,6 +58,40 @@ const budgetController = (() => {
 
       // Return the new element
       return newItem;
+    },
+
+    calculateBudget: () => {
+      // calculate totals for each category
+      calculateTotal('housing');
+      calculateTotal('food');
+      calculateTotal('travel');
+      calculateTotal('entertainment');
+      calculateTotal('investments');
+      calculateTotal('other');
+
+      // calculate the final total expenses
+      data.totalExpenses = data.totals.housing + data.totals.food + data.totals.travel + data.totals.entertainment + data.totals.investments + data.totals.other;
+
+      // for each category total, calculate the percentage of total expenses 
+      
+      data.housing_percentage = Math.round((data.totals.housing / data.totalExpenses) * 100);
+      data.food_percentage = Math.round((data.totals.food / data.totalExpenses) * 100);
+      data.travel_percentage = Math.round((data.totals.travel / data.totalExpenses) * 100);
+      data.entertainment_percentage = Math.round((data.totals.entertainment / data.totalExpenses) * 100);
+      data.investments_percentage = Math.round((data.totals.investments / data.totalExpenses) * 100);
+      data.other_percentage = Math.round((data.totals.other / data.totalExpenses) * 100);
+    },
+
+    getBudget: () => {
+      return {
+        totalExpenses: data.totalExpenses,
+        housing_percentage: data.housing_percentage,
+        food_percentage: data.food_percentage,
+        travel_percentage: data.travel_percentage,
+        entertainment_percentage: data.entertainment_percentage,
+        investments_percentage: data.investments_percentage,
+        other_percentage: data.other_percentage,
+      }
     },
 
     testing: () => {
@@ -104,12 +154,15 @@ const controller = ((budgetCtrl, UICtrl) => {
 
   const updateBudget = () => {
     // 1. Calculate the budget
+    budgetCtrl.calculateBudget();
 
     // 2. return the budget
+    let totalExpenses = budgetCtrl.getBudget();
 
     // 3. Display the budget on the UI
+    console.log(totalExpenses)
+  };
 
-  }
   const ctrlAddItem = () => {
     // 1. Get the field input data
     let input = UICtrl.getInput();
