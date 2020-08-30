@@ -150,11 +150,8 @@ const UIController = (() => {
     },
 
     displayBudget: obj => {
-      document.querySelector('.expenses__value').textContent = obj.totalExpenses;
-      console.log(obj)
-      console.log(obj.totalExpenses)
-      console.log(obj.allItems)
-
+      document.querySelector('.expenses__value').textContent = '$' + obj.totalExpenses;
+      
       //category values DOM
       document.querySelector('.expenses__housing--value').textContent = '$' + obj.housing;
       document.querySelector('.expenses__food--value').textContent = '$' + obj.food;
@@ -245,7 +242,26 @@ const controller = ((budgetCtrl, UICtrl) => {
 
   return {
     init: () => {
-      console.log('application started')
+      console.log('Application started')
+      UICtrl.displayBudget({
+        totalExpenses: 0,
+
+        // category totals
+        housing: 0,
+        food: 0,
+        travel: 0,
+        entertainment: 0,
+        investments: 0,
+        other: 0,
+
+        //category percentages
+        housing_percentage: -1,
+        food_percentage: -1,
+        travel_percentage: -1,
+        entertainment_percentage: -1,
+        investments_percentage: -1,
+        other_percentage: -1
+        });
       setupEventListeners();
     }
   }
