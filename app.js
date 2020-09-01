@@ -60,6 +60,23 @@ const budgetController = (() => {
       return newItem;
     },
 
+    deleteItem: (type, id) => {
+      let index;
+      // Create an array with all the ID numbers we have
+      // Loop over all items of a type, and return their ID
+      let ids = data.allItems[type].map(current => {
+        return current.id;
+      });
+      index = ids.indexOf(id);
+
+      // If the item is not found in the array, then index is -1.
+      // So we only want to remove something, if the index is not -1
+
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1)
+      }
+    },
+
     calculateBudget: () => {
       // calculate totals for each category
       calculateTotal('housing');
@@ -140,6 +157,11 @@ const UIController = (() => {
       listType.insertAdjacentHTML('beforeend', html)
     },
 
+    deleteListItem: (selectorID) => {
+      let el = document.getElementById(selectorID);
+      el.parentNode.removeChild(el);
+    },
+
     clearFields: () => {
       let fields = document.querySelectorAll('.add__description' + ', ' + '.add__value');
       let fieldsArr = Array.prototype.slice.call(fields);
@@ -207,6 +229,9 @@ const controller = ((budgetCtrl, UICtrl) => {
         ctrlAddItem();
       }
     });
+
+    document.querySelector('.container').addEventListener('click', ctrlDeleteItem)
+
   }
 
   const updateBudget = () => {
@@ -239,6 +264,26 @@ const controller = ((budgetCtrl, UICtrl) => {
     }
     
   };
+
+  const ctrlDeleteItem = event => {
+    let itemID, splitID, type, ID;
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    if (itemID) {
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+
+      // 1. delete the item from the data structure
+      budgetCtrl.deleteItem(type, ID);
+
+      // 2. delete the item from the UI
+      UICtrl.deleteListItem(itemID);
+
+      // 3. Update and show the new budget
+      updateBudget();
+
+    }
+  }
 
   return {
     init: () => {
